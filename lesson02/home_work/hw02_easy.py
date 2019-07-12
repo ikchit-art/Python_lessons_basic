@@ -13,13 +13,37 @@
 
 # Подсказка: воспользоваться методом .format()
 
+fruts = ["яблоко", "банан", "киви", "арбуз"]
+num = 1
+for i in fruts:
+    print('{}.{:>9}'.format(num, i))
+    num += 1
 
+print()
 # Задача-2:
 # Даны два произвольные списка.
 # Удалите из первого списка элементы, присутствующие во втором списке.
+
+fruts = ["яблоко", "банан", "киви", "арбуз"]
+someList = ["яблоко", "аппельсин", "персик", "арбуз"]
+print(fruts)
+for i in fruts:
+    for j in someList:
+        if i == j:
+            fruts.pop(fruts.index(j))
+print(fruts)
 
 
 # Задача-3:
 # Дан произвольный список из целых чисел.
 # Получите НОВЫЙ список из элементов исходного, выполнив следующие условия:
 # если элемент кратен двум, то разделить его на 4, если не кратен, то умножить на два.
+
+someNumList = [12, 45, 82, 47, 65, 75, 4, 49, 32]
+print(someNumList)
+for i in someNumList:
+    if i % 2 == 0:
+        someNumList[someNumList.index(i)] = i / 4
+    else:
+        someNumList[someNumList.index(i)] = i * 2
+print(someNumList)
