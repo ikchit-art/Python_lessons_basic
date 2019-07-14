@@ -1,10 +1,24 @@
+def is_number(n):
+    try:
+        float(n)
+    except ValueError:
+        return False
+    return True
+
 # Задание-1: уравнение прямой вида y = kx + b задано в виде строки.
 # Определить координату y точки с заданной координатой x.
+# вычислите и выведите y
 
 equation = 'y = -12x + 11111140.2121'
 x = 2.5
-# вычислите и выведите y
+listEquation = equation.split(' ')
+for i in listEquation:
+    if i == 'y' or i == '+' or i == '=':
+        listEquation.pop(i.index(i))
+y = x * int(''.join(listEquation[0].split('x'))) + float(listEquation[2])
 
+print(listEquation)
+print(y)
 
 # Задание-2: Дата задана в виде строки формата 'dd.mm.yyyy'.
 # Проверить, корректно ли введена дата.
@@ -24,7 +38,25 @@ date = '01.22.1001'
 date = '1.12.1001'
 date = '-2.10.3001'
 
+month = {'01': 31, '02': 29, '03': 31, '04': 30, '05': 31,
+         '06': 30, '07': 31, '08': 31, '09': 30, '10': 31,
+         '11': 30, '12': 31}
 
+while True:
+    dataUse = input('Введите дату в формате dd.mm.yyyy: ')
+    if dataUse.count('.') == 2:
+        listData = dataUse.split('.')
+        if len(listData[1]) != 2 and int(listData[1]) < 10:
+            listData[1] = '0' + listData[1]
+        if len(listData[0]) < 2 and int(listData[0]) < 10:
+            listData[0] = '0' + listData[0]
+        if is_number(listData[0]) and is_number(listData[1]) and is_number(listData[2]):
+            if int(listData[0]) > 0 and int(listData[1]) > 0 and int(listData[2]) > 1000:
+                if int(listData[1]) < 13:
+                    if int(month.get(listData[1])) >= int(listData[0]):
+                        break
+print('{}.{}.{}'.format(listData[0], listData[1], listData[2]))
+print()
 # Задание-3: "Перевёрнутая башня" (Задача олимпиадного уровня)
 #
 # Вавилонцы решили построить удивительную башню —
@@ -54,3 +86,17 @@ date = '-2.10.3001'
 #
 # Вход: 11
 # Выход: 5 3
+numRoom = int(input('Введите номер комнаты: '))
+x = 0
+floor = 0
+box = 0
+while x <= numRoom:
+    box += 1
+    floor += box
+    x += box ** 2
+
+while x - box >= numRoom:
+    floor -= 1
+    x -= box
+leftNum = box - (x - numRoom)
+print('floor = {}, leftNum = {}'.format(floor, leftNum))
