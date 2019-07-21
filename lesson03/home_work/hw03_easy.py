@@ -5,7 +5,21 @@
 # Для решения задачи не используйте встроенные функции и функции из модуля math.
 
 def my_round(number, ndigits):
-    pass
+    m = 10 ** (ndigits + 1)
+    n1 = int(number * m)
+    i = 1
+    while (m - 1) // 10 > 0:
+        n = (n1 % 10 ** i) // (10 ** (i - 1))
+        i += 1
+        if n <= 5:
+            break
+        elif (n < 9) and (n > 5):
+            n1 = n1 + (10 - n)
+            break
+        elif n == 9:
+            n1 += (10 - n)
+        m //= 10
+    return n1 / 10 ** (ndigits + 1)
 
 
 print(my_round(2.1234567, 5))
@@ -20,9 +34,18 @@ print(my_round(2.9999967, 5))
 # !!!P.S.: функция не должна НИЧЕГО print'ить
 
 def lucky_ticket(ticket_number):
-    pass
+    my_list = list(map(int, str(ticket_number)))
+    if len(my_list) % 2 == 0:
+        len_my_list = len(my_list) // 2
+    else:
+        len_my_list = (len(my_list) // 2) + 1
+    if sum(my_list[0:len(my_list) // 2]) == sum(my_list[len_my_list:len(my_list)]):
+        fg = "билет счастливый"
+    else: fg = "билет несчастливый"
+    print(sum(my_list[0:len(my_list) // 2]), ' ', sum(my_list[len_my_list:len(my_list)]))
+    return fg
 
 
 print(lucky_ticket(123006))
-print(lucky_ticket(12321))
+print(lucky_ticket(12341321))
 print(lucky_ticket(436751))
