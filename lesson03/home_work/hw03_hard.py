@@ -20,7 +20,7 @@ def action_(str_fr_num):
 
 
 def is_digits(symbol):
-    for i in '/1234567890':
+    for i in '1234567890':
         if i == symbol:
             return True
 
@@ -30,7 +30,7 @@ def search_num(str_fr_num):
     for i in str_fr_num:
         if is_digits(i):
             i_num.append(i)
-    return ''.join(i_num)
+    return '/'.join(i_num)
 
 
 def search_fractional(strFractionalNum):
@@ -49,16 +49,29 @@ def search_fractional(strFractionalNum):
         return Fraction(str_one_num) - Fraction(str_two_num)
 
 
-def def_main(str_fractional_num):
-    print(search_fractional(str_fractional_num))
-
 
 print('Программа, выполняет операции (сложение и вычитание) с простыми дробями.\n')
 strFractionalNum = input('Введите в стоку простые дробные числа со знаком сложения или вычитания между ними: ')+' '
-def_main(strFractionalNum)
+fr = search_fractional(strFractionalNum)
+
+i_num = []
+tr = []
+for i in str(fr):
+    if is_digits(i):
+        i_num.append(i)
+    else:
+        tr.append(''.join(i_num))
+        i_num.clear()
+tr.append(''.join(i_num))
+i_num.clear()
+
+if int(tr[0]) > int(tr[1]):
+    print(f'{int(tr[0]) // int(tr[1])} {int(tr[0]) - int(tr[1])}/{int(tr[1])}')
+else:
+    print(fr)
 
 
-print()
+
 # Задание-2:
 # Дана ведомость расчета заработной платы (файл "data/workers").
 # Рассчитайте зарплату всех работников, зная что они получат полный оклад,
@@ -66,7 +79,44 @@ print()
 # то их ЗП уменьшается пропорционально, а за заждый час переработки
 # они получают удвоенную ЗП, пропорциональную норме.
 # Кол-во часов, которые были отработаны, указаны в файле "data/hours_of"
+import os
 
+
+def read_file(file):
+    with open(file, "r", encoding='utf-8') as f:
+        return f.readlines()
+
+
+def file_processing(file):
+    data = read_file(file)
+    a = []
+    for i in range(1, len(data)):
+        a.append((' '.join(data[i].split())).split())
+    return a
+
+
+def salary(salary_, fact_time, norm_time):
+    if int(fact_time) == int(norm_time):
+        a = 1
+    else:
+        a = int(fact_time) - int(norm_time)
+    return str(round(int(salary_) + int(salary_) / int(norm_time) * a, 2))
+
+
+file_workers = os.path.join(os.path.dirname(os.path.abspath(__file__)), r"data\workers")
+file_hours_of = os.path.join(os.path.dirname(os.path.abspath(__file__)), r"data\hours_of")
+final = []
+
+for i in file_processing(file_workers):
+    for j in file_processing(file_hours_of):
+        if i[0] == j[0] and i[1] == j[1]:
+            if i[4] == j[2]:
+                final.append(''.join(f'{i[0]}, {i[1]}, оклад {i[2]} руб., з/п {salary(i[2], j[2], i[4])} руб., норма {i[4]} час, факт. отработано {j[2]}'))
+            else:
+                final.append(''.join(f'{i[0]}, {i[1]}, оклад {i[2]} руб., з/п {salary(i[2], j[2], i[4])} руб., норма {i[4]} час, факт. отработано {j[2]}'))
+
+for i in final:
+    print(i)
 
 # Задание-3:
 # Дан файл ("data/fruits") со списком фруктов.
@@ -80,3 +130,20 @@ print()
 # Подсказка:
 # Чтобы получить список больших букв русского алфавита:
 # print(list(map(chr, range(ord('А'), ord('Я')+1))))
+
+file_fruits = os.path.join(os.path.dirname(os.path.abspath(__file__)), r"data\fruits.txt")
+print(read_file(file_fruits))
+check_list = "АБВГДЕЁЖЗИЙКЛМНОПРСТУФХЦЧШЩЭЮЯ"
+new_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), r'fruits')
+if not os.path.exists(new_path):
+    os.makedirs(new_path)
+
+for i in read_file(file_fruits):
+    if i != "\n":
+        for j in check_list:
+            if i[0] == j:
+                my_file = open(os.path.join(new_path, fr"fruits_{j}.txt"), "a")
+                my_file.write(i)
+        my_file.close()
+print()
+
