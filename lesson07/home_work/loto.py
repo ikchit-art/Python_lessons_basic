@@ -57,3 +57,75 @@
 модуль random: http://docs.python.org/3/library/random.html
 
 """
+import random
+
+
+class TableNum:
+    def __init__(self):
+        self.list_num = TableNum.gen_table
+
+    def del_num(self, num):
+        pass
+
+    @staticmethod
+    def draw_table():
+        print('------- Ваша карточка --------')
+        for i in range(3):
+            for j in range(9):
+                print("{:>3}".format(TableNum.list_num[0][j]), end='')
+            print()
+        print('-----------------------------')
+        print('---- Карточка компьютера ----')
+
+        for i in range(3):
+            for j in range(9):
+                print("{:>3}".format(TableNum.list_num[1][j]), end='')
+            print()
+        print('-----------------------------')
+
+    @property
+    def gen_table(self):
+        list_num = [random.sample(range(1, 90), 27),
+                    random.sample(range(1, 90), 27)]
+        for index in range(2):
+            for i in random.sample(range(0, 9), 4):
+                list_num[index][i] = ''
+
+        return list_num
+
+
+class Box:
+    # def __init__(self):
+    #     self.list_del_num = "список зачеркнутых номеров"
+    #     self.list_left_keg = "список оставшихся боченков в мешке"
+
+    def gen_keg(self, round_game):
+        keg = random.sample(range(1, 90), 89)
+        print(f"Выпал боченок: {keg[round_game]} (в мешке {91 - round_game} осталось номеров)")
+        return keg[round_game]
+
+
+class Game(Box):
+    def __init__(self, round_game):
+        # self.gamer =
+        self.r_game = round_game
+
+    def round_game(self):
+        k = self.r_game + 1
+        return k
+
+    def find_keg(self, list_game):
+        x = self.gen_keg(self.round_game())
+        return list_game.count(x)
+
+
+print('Это игра Лото:')
+table = TableNum
+game = Game(1)
+status = False
+while not status:
+    game.gen_keg(game.round_game())
+    table.draw_table()
+    check = input('Зачеркнуть цифру? (y/n)')
+    if check == 'y':
+        status = True
